@@ -66,7 +66,7 @@ elmo-hikes/
 
 
 ## Contributors
-- Carlos Arevalo - BCIT CST Student with a passion for outdoor adventures and user-friendly applications. Fun fact: I play the Reti opening as white in Chess.
+- Carlos Arevalo - A BCIT CST Student with a passion for outdoor adventures and user-friendly applications. Fun fact: I play the Reti opening as white in Chess.
 
 ---
 
