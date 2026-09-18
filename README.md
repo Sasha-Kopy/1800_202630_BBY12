@@ -66,7 +66,10 @@ elmo-hikes/
 
 
 ## Contributors
-- **Marco Tellez** - BCIT CST Student who enjoys going on hikes and spending time with friends. Fun Fact: Makes a mean bolognese sauce
+- Marco Tellez - BCIT CST Student who enjoys going on hikes and spending time with friends. Fun Fact: Makes a mean bolognese sauce
+- Carlos Arevalo - A BCIT CST Student with a passion for outdoor adventures and user-friendly applications. Fun fact: I play the Reti opening as white in Chess.
+- Sasha Kopytok - BCIT CST Student with a passion for outdoor adventures and user-friendly applications. Fun fact: Loves to play volleyball and ride motorcycles.
+
 ---
 
 
