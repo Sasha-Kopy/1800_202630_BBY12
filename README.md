@@ -66,7 +66,7 @@ elmo-hikes/
 
 
 ## Contributors
-- **Sasha Kopytok** - BCIT CST Student with a passion for outdoor adventures and user-friendly applications. Fun fact: Loves to play volleyball and ride motorcycles.
+- **Sasha Kopytok** - BCIT CST Student who likes cooking and sports. Fun fact: Loves to play volleyball and ride motorcycles.
 
 ---
 
