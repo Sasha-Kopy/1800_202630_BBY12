@@ -21,6 +21,17 @@ export const logOut = () => signOut(auth);
 // Calls cb(user) now and whenever login state changes (user is null when logged out)
 export const onUser = (cb) => onAuthStateChanged(auth, cb);
 
+// For pages that need a logged-in user: sends logged-out visitors to login.html,
+// otherwise calls cb(user).
+export const requireUser = (cb) =>
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      location.href = "login.html";
+      return;
+    }
+    cb(user);
+  });
+
 const MESSAGES = {
   "auth/invalid-email": "Enter a valid email address.",
   "auth/missing-password": "Enter your password.",

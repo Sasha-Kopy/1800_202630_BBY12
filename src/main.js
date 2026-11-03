@@ -1,5 +1,5 @@
-<<<<<<< HEAD
 import { onUser, logOut } from "./authentication.js";
+import "./home.js"; // budget status card
 
 const authButtons = document.getElementById("authButtons");
 const userBox = document.getElementById("userBox");
@@ -13,15 +13,3 @@ onUser((user) => {
 });
 
 document.getElementById("logoutBtn").addEventListener("click", () => logOut());
-=======
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import 'bootstrap';
-
-// If you have custom global styles, import them as well:
-// import '../styles/style.css';
-
-function sayHello() {
-
-}
-// document.addEventListener('DOMContentLoaded', sayHello);
->>>>>>> 6b3b6b808228a70cc1f772f811b6ce7bd445e98a

@@ -1,5 +1,5 @@
 {
-  "name": "web_template",
+  "name": "pacemoney",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
@@ -7,7 +7,6 @@
     "build": "vite build",
     "preview": "vite preview"
   },
-<<<<<<< HEAD
   "dependencies": {
     "firebase": "^12.0.0"
   },
@@ -18,9 +17,5 @@
     "@firebase/util@1.15.3": true,
     "esbuild@0.28.2": true,
     "protobufjs@7.6.6": true
-=======
-  "devDependencies": {
-    "vite": "^7.0.0"
->>>>>>> 6b3b6b808228a70cc1f772f811b6ce7bd445e98a
   }
 }
