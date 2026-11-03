@@ -68,7 +68,11 @@ elmo-hikes/
 ## Contributors
 - **Sasha Kopytok** - BCIT CST Student who likes cooking and sports. Fun fact: Loves to play volleyball and ride motorcycles.
 - Marco Tellez - BCIT CST Student who enjoys going on hikes and spending time with friends. Fun Fact: Makes a mean bolognese sauce
+<<<<<<< HEAD
 - Carlos Arevalo - A BCIT CST Student with a passion for outdoor adventures and user-friendly applications. Fun fact: I play the Reti opening as white in Chess.
+=======
+- **Carlos Arevalo**- A BCIT CST Student with a passion for outdoor adventures and user-friendly applications. Fun fact: I play the Reti opening as white in Chess.
+>>>>>>> 6b3b6b808228a70cc1f772f811b6ce7bd445e98a
 
 ---
 

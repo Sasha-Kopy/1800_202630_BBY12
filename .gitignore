@@ -1,1 +1,8 @@
+<<<<<<< HEAD
 node_modules/
+=======
+.DS_Store
+*.logs
+node_modules/
+.vscode/
+>>>>>>> 6b3b6b808228a70cc1f772f811b6ce7bd445e98a
