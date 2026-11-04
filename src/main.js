@@ -1,10 +1,15 @@
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import 'bootstrap';
+import { onUser, logOut } from "./authentication.js";
+import "./home.js"; // budget status card
 
-// If you have custom global styles, import them as well:
-// import '../styles/style.css';
+const authButtons = document.getElementById("authButtons");
+const userBox = document.getElementById("userBox");
+const greeting = document.getElementById("greeting");
 
-function sayHello() {
+// Both boxes start hidden so the wrong one never flashes before Firebase responds
+onUser((user) => {
+  authButtons.classList.toggle("d-none", Boolean(user));
+  userBox.classList.toggle("d-none", !user);
+  if (user) greeting.textContent = `Hi, ${user.displayName || user.email}`;
+});
 
-}
-// document.addEventListener('DOMContentLoaded', sayHello);
+document.getElementById("logoutBtn").addEventListener("click", () => logOut());

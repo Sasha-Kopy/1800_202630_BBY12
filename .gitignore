@@ -1,4 +1,8 @@
 .DS_Store
-*.logs
 node_modules/
+dist/
 .vscode/
+*.log
+.env
+.env.*
+.firebase/
