@@ -10,6 +10,15 @@ service cloud.firestore {
     match /users/{userId} {
       allow read, write: if isOwner(userId);
 
+      // Saved quick-add items: users/{uid}/quickItems/{id}
+      match /quickItems/{itemId} {
+        allow read, delete: if isOwner(userId);
+        allow create: if isOwner(userId)
+          && request.resource.data.description is string
+          && request.resource.data.amount is number
+          && request.resource.data.amount > 0;
+      }
+
       // Expenses: users/{uid}/transactions/{id}
       match /transactions/{txId} {
         allow read, delete: if isOwner(userId);
