@@ -12,11 +12,79 @@
     <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
-    <div class="b-example-divider"></div> <div class="container px-4 py-5" id="hanging-icons"> <h2 class="pb-2 border-bottom">Home</h2><div class="row g-4 py-5 row-cols-1 row-cols-lg-3"> <div class="col d-flex align-items-start"> <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3"> <svg class="bi" width="1em" height="1em" aria-hidden="true"><use xlink:href="#toggles2"></use></svg> </div> 
-    <div> <h3 class="fs-2 text-body-emphasis">Daily item 1</h3><a href="#" class="btn btn-primary">Bought it.</a> <a href="#" class="btn btn-primary">Skipped it.</a> </div> 
-</div> <div class="col d-flex align-items-start"> <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3"> <svg class="bi" width="1em" height="1em" aria-hidden="true"><use xlink:href="#cpu-fill"></use></svg> </div> <div> <h3 class="fs-2 text-body-emphasis">Daily item 2</h3><a href="#" class="btn btn-primary">
-Bought it. </a> <a href="#" class="btn btn-primary">
-Skipped it.
-</a>
-</div></div></div></div>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                <img src="./images/budget.png" height="36" alt="">PaceMoney
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="home.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="dashboard.html">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="Savings.html">Savings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" aria-disabled="true">Budget (coming soon)</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="settings.html">Settings</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+        <div class="b-example-divider"></div>
+        <div class="container px-4 py-5" id="hanging-icons">
+        <h2 class="pb-2 border-bottom">Home</h2>
+
+        <!-- Progress bar -->
+        <div class="my-4">
+        <h4 class="fs-5 mb-2">Progress to Goal</h4>
+        <div class="progress position-relative" style="height: 28px;" role="progressbar" aria-label="Progress to Goal"
+        aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-wrapper">
+        <div class="progress-bar" id="progress-bar" style="width: 0%; transition: width .3s;"></div>
+        <span id="progress-text"
+            class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center fw-bold text-dark">0%</span>
+        </div>
+        </div>
+
+            <!-- Daily item 1 -->
+            <div class="col d-flex align-items-start daily-item" data-amount="5">
+            <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+                <svg class="bi" width="1em" height="1em" aria-hidden="true"><use xlink:href="#toggles2"></use></svg>
+            </div>
+            <div>
+                <h3 class="fs-2 text-body-emphasis">Daily item 1</h3>
+                <a href="#" class="btn btn-primary" data-action="bought">Bought it.</a>
+                <a href="#" class="btn btn-primary" data-action="skipped">Skipped it.</a>
+            </div>
+            </div>
+
+            <!-- Daily item 2 -->
+            <div class="col d-flex align-items-start daily-item" data-amount="10">
+            <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+                <svg class="bi" width="1em" height="1em" aria-hidden="true"><use xlink:href="#cpu-fill"></use></svg>
+            </div>
+            <div>
+                <h3 class="fs-2 text-body-emphasis">Daily item 2</h3>
+                <a href="#" class="btn btn-primary" data-action="bought">Bought it.</a>
+                <a href="#" class="btn btn-primary" data-action="skipped">Skipped it.</a>
+            </div>
+            </div>
+
+        </div>
+        </div>
+    <script src="src/Savingstracker.js"></script>
+    <script src="src/Savingsprogress.js"></script>
 </body>
+</html>
