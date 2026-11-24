@@ -35,6 +35,9 @@
                         <a class="nav-link" href="Savings.html">Savings</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="index.html">Budget</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="settings.html">Settings</a>
                     </li>
                 </ul>
@@ -60,6 +63,20 @@
         <div class="card shadow-sm p-4 mb-4">
             <h3 class="h5 mb-3">Quick add</h3>
             <div id="quickItems" class="d-flex flex-wrap gap-2"></div>
+            <form id="quickForm" class="row g-2 mt-3" novalidate>
+                <div class="col-sm-6">
+                    <label for="quickDesc" class="visually-hidden">Item name</label>
+                    <input type="text" id="quickDesc" class="form-control" placeholder="Item name (e.g. Coffee)" maxlength="100" required>
+                </div>
+                <div class="col-6 col-sm-3">
+                    <label for="quickAmount" class="visually-hidden">Price ($)</label>
+                    <input type="number" id="quickAmount" class="form-control" placeholder="Price" step="0.01" min="0.01" required>
+                </div>
+                <div class="col-6 col-sm-3">
+                    <button type="submit" class="btn btn-outline-primary w-100">Save item</button>
+                </div>
+            </form>
+            <p class="small text-muted mt-2 mb-0">Saving an item here doesn't log any spending.</p>
             <div id="quickStatus" class="small text-success mt-2" role="status" aria-live="polite"></div>
         </div>
 

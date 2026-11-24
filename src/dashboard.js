@@ -10,6 +10,7 @@ import { computeStreak } from "./streak.js";
 const REQUIRED_IDS = [
   "expenseForm", "expenseDesc", "expenseAmount", "expenseDate", "saveQuickCheck", "expenseAlert",
   "expenseList", "expenseTotal", "expenseListHeading", "quickItems", "quickStatus",
+  "quickForm", "quickDesc", "quickAmount",
   "streakIcon", "streakCount", "streakUnit", "streakMessage", "streakBest",
 ];
 const missingIds = REQUIRED_IDS.filter((id) => !document.getElementById(id));
@@ -35,6 +36,10 @@ const totalEl = document.getElementById("expenseTotal");
 const listHeading = document.getElementById("expenseListHeading");
 const quickList = document.getElementById("quickItems");
 const quickStatus = document.getElementById("quickStatus");
+const quickForm = document.getElementById("quickForm");
+const quickDesc = document.getElementById("quickDesc");
+const quickAmount = document.getElementById("quickAmount");
+const quickButton = quickForm.querySelector("button[type=submit]");
 const streakIcon = document.getElementById("streakIcon");
 const streakCount = document.getElementById("streakCount");
 const streakUnit = document.getElementById("streakUnit");
@@ -171,7 +176,7 @@ function renderQuickItems() {
     const hint = document.createElement("span");
     hint.className = "text-muted";
     hint.textContent =
-      "Nothing saved yet. Tick \"Save as a quick-add item\" below, or tap the star on an expense.";
+      "Nothing saved yet. Add an item with the form below, or tap the star on an expense.";
     quickList.append(hint);
     return;
   }
@@ -313,6 +318,34 @@ requireUser((user) => {
 
 dateInput.addEventListener("change", () => {
   if (currentUser && dateInput.value) loadExpenses();
+});
+
+// Save a quick-add item on its own: no expense is logged
+quickForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  hideAlert();
+  if (!quickForm.reportValidity()) return;
+  if (!currentUser) return;
+
+  const description = quickDesc.value.trim();
+  const cents = toCents(quickAmount.value);
+  if (!description) {
+    showAlert("Enter a name for the item.");
+    return;
+  }
+  if (cents <= 0) {
+    showAlert("Enter a price greater than $0.00.");
+    return;
+  }
+
+  quickButton.disabled = true;
+  const result = await saveQuickItem(description, cents); // shows its own toast or error
+  quickButton.disabled = false;
+  if (result === "saved") {
+    quickDesc.value = "";
+    quickAmount.value = "";
+    quickDesc.focus();
+  }
 });
 
 form.addEventListener("submit", async (e) => {
