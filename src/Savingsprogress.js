@@ -42,8 +42,8 @@ function updateProgressBar() {
   wrapper.setAttribute("aria-valuenow", percent);
   caption.textContent =
     goalCents > 0
-      ? `Saved $${formatCents(savedCents)} of $${formatCents(goalCents)}`
-      : "Set a savings goal in Settings to track your progress.";
+      ? `Saved $${formatCents(savedCents)} of $${formatCents(goalCents)} this month`
+      : "Set a monthly savings target in Settings to track your progress.";
 }
 
 function makeButton(label, classes) {
@@ -145,8 +145,13 @@ async function load() {
       getDocs(userCol("skips")),
       getDocs(userCol("quickItems")),
     ]);
-    goalCents = toCents(settings.exists() ? settings.data().savingsGoal : 0);
-    savedCents = skips.docs.reduce((sum, d) => sum + toCents(d.data().amount), 0);
+    const s = settings.exists() ? settings.data() : {};
+    goalCents = toCents(s.monthlySavingsTarget ?? s.savingsGoal); // monthly target from Settings (older saves used savingsGoal)
+    const month = pageDate.slice(0, 7);
+    savedCents = skips.docs.reduce((sum, d) => {
+      const { date, amount } = d.data();
+      return date.startsWith(month) ? sum + toCents(amount) : sum; // this month's skips only
+    }, 0);
     skippedToday = new Set(
       skips.docs.map((d) => d.data()).filter((s) => s.date === pageDate).map((s) => skipKey(s.description, toCents(s.amount)))
     );
