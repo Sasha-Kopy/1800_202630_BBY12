@@ -9,15 +9,16 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
     <link rel="stylesheet" href="styles/style.css">
+    <script>document.documentElement.setAttribute("data-bs-theme", localStorage.getItem("theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));</script>
 </head>
 
 <body class="bg-light">
 
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+           <span class="navbar-brand d-flex align-items-center gap-2">
                 <img src="./images/budget.png" height="36" alt="">PaceMoney
-            </a>
+            </span>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -29,10 +30,13 @@
                         <a class="nav-link" href="home.html">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="dashboard.html">Dashboard</a>
+                        <a class="nav-link" href="dashboard.html">Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="Savings.html">Savings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Budget</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="settings.html">Settings</a>
@@ -60,6 +64,20 @@
         <div class="card shadow-sm p-4 mb-4">
             <h3 class="h5 mb-3">Quick add</h3>
             <div id="quickItems" class="d-flex flex-wrap gap-2"></div>
+            <form id="quickForm" class="row g-2 mt-3" novalidate>
+                <div class="col-sm-6">
+                    <label for="quickDesc" class="visually-hidden">Item name</label>
+                    <input type="text" id="quickDesc" class="form-control" placeholder="Item name (e.g. Coffee)" maxlength="100" required>
+                </div>
+                <div class="col-6 col-sm-3">
+                    <label for="quickAmount" class="visually-hidden">Price ($)</label>
+                    <input type="number" id="quickAmount" class="form-control" placeholder="Price" step="0.01" min="0.01" required>
+                </div>
+                <div class="col-6 col-sm-3">
+                    <button type="submit" class="btn btn-outline-primary w-100">Save item</button>
+                </div>
+            </form>
+            <p class="small text-muted mt-2 mb-0">Saving an item here doesn't log any spending.</p>
             <div id="quickStatus" class="small text-success mt-2" role="status" aria-live="polite"></div>
         </div>
 
@@ -99,7 +117,33 @@
         </div>
     </div>
 
+    <!-- Confirm before deleting an expense (wired up by src/confirmDelete.js) -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h3 class="modal-title h5" id="confirmDeleteTitle">Delete this expense?</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmDeleteText" class="mb-1 fw-semibold text-break"></p>
+                <p class="mb-0 text-muted">This can't be undone.</p>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="./src/dashboard.js"></script>
+<script type="module" src="./src/confirmDelete.js"></script>
+
     <script type="module" src="./src/dashboard.js"></script>
+    <script type="module" src=".src/confirmDelete.js"></script>
+    <script type="module" src="./src/theme.js"></script>
 
 </body>
 

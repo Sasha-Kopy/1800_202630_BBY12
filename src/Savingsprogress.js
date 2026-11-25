@@ -3,7 +3,7 @@
 //   "Skipped it" -> money saved, in users/{uid}/skips (moves the progress bar toward savingsGoal)
 import { db } from "./firebaseConfig.js";
 import { requireUser } from "./authentication.js";
-import { collection, addDoc, getDoc, getDocs, doc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, setDoc, getDoc, getDocs, doc, serverTimestamp } from "firebase/firestore";
 import { todayStr, toCents, formatCents } from "./money.js";
 
 const bar = document.getElementById("progress-bar");
@@ -16,6 +16,14 @@ const alertBox = document.getElementById("homeAlert");
 let user = null;
 let goalCents = 0;
 let savedCents = 0;
+let skippedToday = new Set(); // "name|cents" keys of the items already skipped today
+const pageDate = todayStr(); // the day this page was loaded for
+const skipKey = (description, cents) => `${description.toLowerCase()}|${cents}`;
+
+// Show today's date at the top of the page
+document.getElementById("today-date").textContent = new Date().toLocaleDateString(undefined, {
+  weekday: "long", year: "numeric", month: "long", day: "numeric",
+});
 
 const createdMs = (d) => d.data().createdAt?.toMillis?.() ?? 0;
 const userCol = (name) => collection(db, "users", user.uid, name);
@@ -34,8 +42,8 @@ function updateProgressBar() {
   wrapper.setAttribute("aria-valuenow", percent);
   caption.textContent =
     goalCents > 0
-      ? `Saved $${formatCents(savedCents)} of $${formatCents(goalCents)}`
-      : "Set a savings goal in Settings to track your progress.";
+      ? `Saved $${formatCents(savedCents)} of $${formatCents(goalCents)} this month`
+      : "Set a monthly savings target in Settings to track your progress.";
 }
 
 function makeButton(label, classes) {
@@ -47,27 +55,37 @@ function makeButton(label, classes) {
 }
 
 async function logAction(item, kind, buttons, note) {
+  if (todayStr() !== pageDate) return location.reload(); // page was left open past midnight
   alertBox.classList.add("d-none");
   buttons.forEach((b) => (b.disabled = true)); // no accidental double-tap
   const cents = toCents(item.amount);
   const amount = `$${formatCents(cents)}`;
   try {
-    await addDoc(userCol(kind === "bought" ? "transactions" : "skips"), {
-      description: item.description,
-      amount: cents / 100,
-      date: todayStr(),
-      createdAt: serverTimestamp(),
-    });
-    if (kind === "skipped") {
+    const entry = { description: item.description, amount: cents / 100, date: pageDate, createdAt: serverTimestamp() };
+    if (kind === "bought") {
+      await addDoc(userCol("transactions"), entry);
+    } else {
+      // Once per item per day: the doc id is fixed, and the rules don't allow updates,
+      // so Firestore itself rejects a second skip of the same item on the same day.
+      await setDoc(doc(db, "users", user.uid, "skips", `${pageDate}_${item.id}`), entry);
+      skippedToday.add(skipKey(item.description, cents));
+      buttons[1].textContent = "Skipped today";
       savedCents += cents;
       updateProgressBar();
     }
     note.textContent = kind === "bought" ? `Logged ${amount} as spent today.` : `Nice! You saved ${amount}.`;
     note.className = "small mb-0 mt-2 text-success";
   } catch (error) {
-    showError("Couldn't save that. Check your connection and try again.", error);
+    showError(
+      kind === "skipped"
+        ? "Couldn't save that skip. If you already skipped it today, refresh the page."
+        : "Couldn't save that. Check your connection and try again.",
+      error
+    );
   } finally {
-    buttons.forEach((b) => (b.disabled = false));
+    const isSkipped = skippedToday.has(skipKey(item.description, cents));
+    buttons[0].disabled = isSkipped; // "Bought it" locks too once skipped
+    buttons[1].disabled = isSkipped;
   }
 }
 
@@ -108,6 +126,11 @@ function renderItems(items) {
     const bought = makeButton("Bought it.", "me-2");
     const skipped = makeButton("Skipped it.", "");
     const both = [bought, skipped];
+     if (skippedToday.has(skipKey(item.description, toCents(item.amount)))) {
+      bought.disabled = true; // can't buy what you skipped today
+      skipped.disabled = true; // already skipped today (survives a refresh)
+      skipped.textContent = "Skipped today";
+    }
     bought.addEventListener("click", () => logAction(item, "bought", both, note));
     skipped.addEventListener("click", () => logAction(item, "skipped", both, note));
 
@@ -124,8 +147,16 @@ async function load() {
       getDocs(userCol("skips")),
       getDocs(userCol("quickItems")),
     ]);
-    goalCents = toCents(settings.exists() ? settings.data().savingsGoal : 0);
-    savedCents = skips.docs.reduce((sum, d) => sum + toCents(d.data().amount), 0);
+    const s = settings.exists() ? settings.data() : {};
+    goalCents = toCents(s.monthlySavingsTarget ?? s.savingsGoal); // monthly target from Settings (older saves used savingsGoal)
+    const month = pageDate.slice(0, 7);
+    savedCents = skips.docs.reduce((sum, d) => {
+      const { date, amount } = d.data();
+      return date.startsWith(month) ? sum + toCents(amount) : sum; // this month's skips only
+    }, 0);
+    skippedToday = new Set(
+      skips.docs.map((d) => d.data()).filter((s) => s.date === pageDate).map((s) => skipKey(s.description, toCents(s.amount)))
+    );
     updateProgressBar();
     renderItems(items.docs.sort((a, b) => createdMs(a) - createdMs(b)).map((d) => ({ id: d.id, ...d.data() })));
   } catch (error) {
