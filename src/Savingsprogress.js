@@ -83,8 +83,9 @@ async function logAction(item, kind, buttons, note) {
       error
     );
   } finally {
-    buttons[0].disabled = false;
-    buttons[1].disabled = skippedToday.has(skipKey(item.description, cents)); // stays locked once skipped
+    const isSkipped = skippedToday.has(skipKey(item.description, cents));
+    buttons[0].disabled = isSkipped; // "Bought it" locks too once skipped
+    buttons[1].disabled = isSkipped;
   }
 }
 
@@ -125,7 +126,8 @@ function renderItems(items) {
     const bought = makeButton("Bought it.", "me-2");
     const skipped = makeButton("Skipped it.", "");
     const both = [bought, skipped];
-    if (skippedToday.has(skipKey(item.description, toCents(item.amount)))) {
+     if (skippedToday.has(skipKey(item.description, toCents(item.amount)))) {
+      bought.disabled = true; // can't buy what you skipped today
       skipped.disabled = true; // already skipped today (survives a refresh)
       skipped.textContent = "Skipped today";
     }
