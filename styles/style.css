@@ -1,26 +1,107 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap");
+
+/* ---------- Colors: light theme (default) ---------- */
 :root {
     --green: #1b6b57;
     --green-dark: #14503f;
     --green-light: #e6f2ee;
     --text: #1f2d2a;
     --border: #d8e3df;
+
+    --page-bg: #f7faf9;
+    --surface: #ffffff;
+    --heading: #14503f;
+    --accent: #1b6b57;
+    --on-accent: #ffffff;
+    --hover-bg: #e6f2ee;
+    --nav-bg: #1b6b57;
+
+    --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* ---------- Colors: dark theme (set by src/theme.js) ---------- */
+[data-bs-theme="dark"] {
+    --green-light: #1a2f29;
+    --text: #e3ece9;
+    --border: #2f4640;
+
+    --page-bg: #0f1a17;
+    --surface: #172622;
+    --heading: #7fd1b9;
+    --accent: #5cc4a6;
+    --on-accent: #0f1a17;
+    --hover-bg: #1f3730;
+    --nav-bg: #0f3d31;
+}
+
+/* Bigger base size: Bootstrap sizes are in rem, so everything scales with this */
+html {
+    font-size: 112.5%; /* 18px */
+    scroll-behavior: smooth;
 }
 
 body {
-    font-family: "Segoe UI", Arial, sans-serif;
+    font-family: "Plus Jakarta Sans", "Segoe UI", Arial, sans-serif;
+    font-size: 1rem;
     color: var(--text);
-    background-color: #f7faf9;
-    line-height: 1.6;
+    background-color: var(--page-bg);
+    line-height: 1.65;
+    transition: background-color 0.3s var(--ease), color 0.3s var(--ease);
 }
 
-h1, h2, h3 {
+/* Dashboard and Settings use Bootstrap's bg-light, which stays light in dark mode */
+[data-bs-theme="dark"] .bg-light {
+    background-color: var(--page-bg) !important;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5 {
     font-weight: 700;
-    color: var(--green-dark);
+    color: var(--heading);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+}
+
+h1, .display-5 {
+    font-size: clamp(2.25rem, 5vw, 3.25rem);
+    font-weight: 800;
+}
+
+h2 { font-size: clamp(1.75rem, 3.5vw, 2.25rem); }
+h3 { font-size: 1.5rem; }
+h4, .h5, .fs-5 { font-size: 1.25rem !important; }
+
+.lead {
+    font-size: 1.25rem;
+    line-height: 1.7;
+}
+
+.form-label {
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.small, small {
+    font-size: 0.9rem;
+}
+
+/* Links */
+a {
+    transition: color 0.2s var(--ease);
+}
+
+/* Keyboard focus */
+:focus-visible {
+    outline: 3px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
 }
 
 /* Navbar */
 .navbar {
-    background-color: var(--green) !important;
+    background-color: var(--nav-bg) !important;
+    padding-block: 0.75rem;
+    box-shadow: 0 2px 10px rgba(20, 80, 63, 0.25);
 }
 
 .navbar-brand,
@@ -28,20 +109,51 @@ h1, h2, h3 {
     color: #fff !important;
 }
 
-.navbar .nav-link {
-    opacity: 0.85;
-}
-
-.navbar .nav-link:hover,
-.navbar .nav-link.active {
-    opacity: 1;
-    text-decoration: underline;
-    text-underline-offset: 6px;
-}
-
 .navbar-brand {
     white-space: normal;
-    font-weight: 700;
+    font-weight: 800;
+    font-size: 1.4rem;
+}
+
+.navbar .nav-link {
+    font-size: 1.05rem;
+    font-weight: 500;
+    opacity: 0.85;
+    padding: 0.5rem 1rem;
+    margin-inline: 0.15rem;
+    border-radius: 8px;
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-underline-offset: 8px;
+    text-decoration-thickness: 2px;
+    transition: opacity 0.2s var(--ease), background-color 0.2s var(--ease),
+        transform 0.2s var(--ease), text-decoration-color 0.2s var(--ease);
+}
+
+/* Current page keeps its underline */
+.navbar .nav-link.active {
+    opacity: 1;
+    text-decoration-color: #fff;
+}
+
+/* Hovered link gets a highlight pill and lifts slightly */
+.navbar .nav-link:hover,
+.navbar .nav-link:focus-visible {
+    opacity: 1;
+    background-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-1px);
+}
+
+/* While hovering the menu, dim the other links so the hovered one stands out */
+.navbar-nav:hover .nav-link:not(:hover) {
+    opacity: 0.55;
+}
+
+/* White focus ring on the green navbar so it's visible */
+.navbar .nav-link:focus-visible,
+.navbar-brand:focus-visible,
+.theme-toggle:focus-visible {
+    outline-color: #fff;
 }
 
 .navbar-toggler {
@@ -52,41 +164,120 @@ h1, h2, h3 {
     filter: invert(1);
 }
 
+/* Dark mode toggle button in the navbar */
+.theme-toggle {
+    font-size: 1.1rem;
+    line-height: 1;
+    padding: 0.45rem 0.7rem;
+}
+
 /* Buttons */
 .btn {
-    border-radius: 6px;
+    border-radius: 8px;
     font-weight: 600;
+    font-size: 1.05rem;
+    padding: 0.6rem 1.25rem;
+    transition: transform 0.15s var(--ease), box-shadow 0.2s var(--ease),
+        background-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(20, 80, 63, 0.22);
+}
+
+.btn:active {
+    transform: translateY(0) scale(0.97);
+    box-shadow: none;
 }
 
 .btn-primary {
     background-color: var(--green);
     border-color: var(--green);
+    color: #fff;
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-primary:focus-visible {
     background-color: var(--green-dark);
     border-color: var(--green-dark);
+    color: #fff;
 }
 
 .btn-outline-primary,
 .btn-outline-success {
-    color: var(--green);
-    border-color: var(--green);
+    color: var(--accent);
+    border-color: var(--accent);
 }
 
 .btn-outline-primary:hover,
 .btn-outline-success:hover {
-    background-color: var(--green);
-    border-color: var(--green);
-    color: #fff;
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: var(--on-accent);
 }
 
-/* index.html hero */
+.btn-danger {
+    background-color: #b42318;
+    border-color: #b42318;
+}
+
+.btn-danger:hover,
+.btn-danger:focus-visible {
+    background-color: #8f1c13;
+    border-color: #8f1c13;
+}
+
+/* Form fields */
+.form-control {
+    font-size: 1.05rem;
+    padding: 0.65rem 0.9rem;
+    border-radius: 8px;
+    border-color: var(--border);
+    transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+.form-control:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 0.25rem rgba(27, 107, 87, 0.25);
+}
+
+.form-check-input:checked {
+    background-color: var(--green);
+    border-color: var(--green);
+}
+
+/* Cards (dashboard, settings) */
+.card {
+    border-color: var(--border);
+    border-radius: 12px;
+    transition: background-color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+
+/* Alerts and status messages */
+.alert {
+    font-size: 1rem;
+    border-radius: 10px;
+}
+
+/* index.html hero: the one entrance animation on the site */
 .container.col-xl-10 {
     background-color: var(--green-light);
-    border-radius: 12px;
+    border-radius: 16px;
     margin-top: 1.5rem;
-    padding: 2.5rem !important;
+    padding: 3rem 2.5rem !important;
+    animation: hero-in 0.7s var(--ease) both;
+}
+
+@keyframes hero-in {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
 }
 
 .col-lg-6.mx-auto {
@@ -99,22 +290,25 @@ h1, h2, h3 {
 .container.col-xl-10 .col-lg-7 {
     flex: 0 0 100%;
     max-width: 100%;
-    text-align: center !important;  }
+    text-align: center !important;
+}
 
 .lead {
     max-width: 60ch;
     margin-inline: auto;
 }
 
+/* Page titles */
 h2.border-bottom {
-    font-size: 2.25rem;
-    color: var(--green-dark);
-    border-bottom: 3px solid var(--green) !important;
+    font-size: clamp(2rem, 4vw, 2.5rem);
+    color: var(--heading);
+    border-bottom: 3px solid var(--accent) !important;
 }
 
+/* Home page item cards (filled in by JS) */
 .row.row-cols-1 {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1.5rem;
     margin-inline: 0;
 }
@@ -123,25 +317,31 @@ h2.border-bottom {
     width: auto;
     max-width: none;
     margin: 0;
-    background-color: #fff;
+    background-color: var(--surface);
     border: 1px solid var(--border);
     border-top: 5px solid var(--green);
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 1.5rem;
     box-shadow: 0 4px 14px rgba(20, 80, 63, 0.12);
+    transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+
+.col.d-flex:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(20, 80, 63, 0.18);
 }
 
 .col.d-flex h3 {
-    font-size: 1.4rem !important;
+    font-size: 1.5rem !important;
     margin-bottom: 1rem;
 }
 
 .icon-square {
     background-color: var(--green-light) !important;
-    color: var(--green) !important;
+    color: var(--accent) !important;
     border-radius: 8px;
-    width: 3rem;
-    height: 3rem;
+    width: 3.25rem;
+    height: 3.25rem;
 }
 
 .col.d-flex .btn-primary + .btn-primary {
@@ -151,5 +351,92 @@ h2.border-bottom {
 }
 
 .col.d-flex .btn-primary + .btn-primary:hover {
+    background-color: var(--hover-bg);
+}
+
+/* Progress bar: fills smoothly when the value changes */
+.progress {
+    border-radius: 999px;
     background-color: var(--green-light);
+}
+
+.progress-bar {
+    background-color: var(--green);
+    border-radius: 999px;
+    transition: width 0.8s var(--ease) !important;
+}
+
+/* The % label uses text-dark, which is unreadable on a dark track */
+[data-bs-theme="dark"] #progress-text {
+    color: #fff !important;
+}
+
+/* Lists: new expenses slide in when added */
+.list-group-item {
+    font-size: 1.05rem;
+    padding-block: 0.85rem;
+    animation: item-in 0.35s var(--ease) both;
+    transition: background-color 0.2s var(--ease);
+}
+
+.list-group-item:hover {
+    background-color: var(--hover-bg);
+}
+
+@keyframes item-in {
+    from {
+        opacity: 0;
+        transform: translateX(-12px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Streak card icon: a soft pulse so it feels alive */
+#streakIcon {
+    display: inline-block;
+    animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.12); }
+}
+
+/* Delete confirmation modal */
+.modal-content {
+    border: 0;
+    border-radius: 14px;
+    box-shadow: 0 20px 50px rgba(20, 80, 63, 0.25);
+}
+
+.modal.fade .modal-dialog {
+    transition: transform 0.25s var(--ease), opacity 0.25s var(--ease);
+}
+
+/* Respect people who turn animations off */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* Smaller screens */
+@media (max-width: 576px) {
+    html {
+        font-size: 100%; /* back to 16px on phones */
+    }
+
+    .container.col-xl-10 {
+        padding: 2rem 1.25rem !important;
+    }
 }

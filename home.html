@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="styles/style.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+        <script>document.documentElement.setAttribute("data-bs-theme", localStorage.getItem("theme") || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));</script>
+
 </head>
 
 <body>
@@ -68,6 +70,7 @@
     </div>
 
     <script type="module" src="./src/Savingsprogress.js"></script>
+    <script type="module" src="./src/theme.js"></script>
 </body>
 
 </html>
